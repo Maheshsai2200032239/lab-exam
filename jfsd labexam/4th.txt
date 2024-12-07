@@ -1,0 +1,54 @@
+package com.klef.jfsd.exam;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class ClientDemo {
+    public static void main(String[] args) {
+        Configuration cfg = new Configuration();
+        cfg.configure("hibernate.cfg.xml");
+        SessionFactory factory = cfg.buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        // Create Vehicle object
+        Vehicle vehicle = new Vehicle() {
+            {
+                setName("Generic Vehicle");
+                setType("Generic");
+                setMaxSpeed(100);
+                setColor("White");
+            }
+        };
+
+        // Create Car object
+        Car car = new Car();
+        car.setName("Sedan");
+        car.setType("Car");
+        car.setMaxSpeed(180);
+        car.setColor("Red");
+        car.setNumberOfDoors(4);
+
+        // Create Truck object
+        Truck truck = new Truck();
+        truck.setName("Cargo Truck");
+        truck.setType("Truck");
+        truck.setMaxSpeed(120);
+        truck.setColor("Blue");
+        truck.setLoadCapacity(5000);
+
+        // Persist objects
+        session.persist(vehicle);
+        session.persist(car);
+        session.persist(truck);
+
+        transaction.commit();
+
+        // Retrieve and display records
+        session.close();
+        factory.close();
+        System.out.println("Records inserted successfully!");
+    }
+}
